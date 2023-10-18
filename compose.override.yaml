@@ -1,0 +1,11 @@
+services:
+  express-api:
+    build:
+      target: dev
+    volumes:
+      - ./src/express:/app
+  react-frontend:
+    build:
+      target: dev
+    volumes:
+      - ./src/react/src:/app/src

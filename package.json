@@ -1,0 +1,12 @@
+{
+  "name": "nodejs-typescript-npm",
+  "version": "1.0.0",
+  "license": "Apache-2.0",
+  "scripts": {
+    "up": "docker compose up -d",
+    "down": "docker compose down",
+    "prune": "docker compose down --rmi all --volumes",
+    "if": "cd src/react && rm -rf node_modules && rm package-lock.json && npm i",
+    "ib": "cd src/express && rm -rf node_modules && rm package-lock.json && npm i"
+  }
+}

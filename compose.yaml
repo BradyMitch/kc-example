@@ -1,0 +1,91 @@
+services:
+  #############################################################################################
+  ###                                       BACKEND                                         ###
+  #############################################################################################
+  express-api:
+    container_name: express-api
+    tty: true
+    init: true # Properly handles running as PID 1 inside a container. Source: https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md#handling-kernel-signals
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "node", "/app/scripts/healthcheck.js"] # Check health endpoint for healthy service.
+      interval: 30s # Perform the health check every 30 seconds.
+      timeout: 10s # Consider the health check a failure if it takes more than 10 seconds.
+      retries: 5 # Retry the health check up to 5 times before considering the container unhealthy.
+    build:
+      context: ./src/express
+      target: prod
+    environment:
+      - ENVIRONMENT=${ENVIRONMENT:-local}
+      - DEBUG=${DEBUG:-false}
+      - PORT=${BACKEND_PORT:-3600}
+      - FRONTEND_PORT=${FRONTEND_PORT:-3500}
+      - PGHOST=${DATABASE_HOST:-postgres-database} # Name of the database container.
+      - PGUSER=${DATABASE_USER:-postgres}
+      - PGPASSWORD=${DATABASE_PASSWORD:-postgres}
+      - PGDATABASE=${DATABASE_NAME:-keycloak}
+      - PGPORT=5432
+      - SSO_AUTH_SERVER_URL=${SSO_AUTH_SERVER_URL}
+      - SSO_CLIENT_ID=${SSO_CLIENT_ID}
+      - SSO_CLIENT_SECRET=${SSO_CLIENT_SECRET}
+    networks:
+      - nodejs-ts-npm-network
+    ports:
+      - ${BACKEND_PORT:-3600}:3600
+    depends_on:
+      postgres-database:
+        condition: service_healthy
+
+  #############################################################################################
+  ###                                       Frontend                                        ###
+  #############################################################################################
+  react-frontend:
+    container_name: react-frontend
+    tty: true
+    restart: on-failure
+    build:
+      context: ./src/react
+      target: prod
+    environment:
+      - PORT=${FRONTEND_PORT:-3500}
+      - BACKEND_PORT=${BACKEND_PORT:-3600}
+      - BACKEND_SERVICE=express-api # Container or service name.
+    networks:
+      - nodejs-ts-npm-network
+    ports:
+      - ${FRONTEND_PORT:-3500}:3500
+    depends_on:
+      express-api:
+        condition: service_healthy
+
+  #############################################################################################
+  ###                                       Database                                        ###
+  #############################################################################################
+  postgres-database:
+    container_name: postgres-database
+    tty: true
+    image: postgres:16-alpine
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER:-postgres}"] # Check if PostgreSQL is ready.
+      interval: 15s # Perform the health check every 15 seconds.
+      timeout: 5s # Consider the health check a failure if it takes more than 5 seconds.
+      retries: 5 # Retry the health check up to 5 times before considering the container unhealthy.
+    environment:
+      - POSTGRES_USER=${DATABASE_USER:-postgres}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD:-postgres}
+      - POSTGRES_DB=${DATABASE_NAME:-keycloak}
+    networks:
+      - nodejs-ts-npm-network
+    ports:
+      - ${DATABASE_PORT:-3700}:5432
+    volumes:
+      - database-data:/var/lib/postgresql/data # Named volume binded to Postgres' data store directory.
+
+volumes:
+  database-data:
+    driver: local # Stores the volume data on the host machine's file system.
+
+networks:
+  nodejs-ts-npm-network:
+    driver: "bridge"
