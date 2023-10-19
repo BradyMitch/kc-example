@@ -169,6 +169,9 @@ const Header = () => {
         }}
       >
         <Divider />
+        <MenuItem>
+          <ListItemText>Roles: {user?.client_roles ?? "None"}</ListItemText>
+        </MenuItem>
         <MenuItem onClick={() => setKeycloakModalOpen(true)}>
           <ListItemIcon>
             <KeyIcon />
