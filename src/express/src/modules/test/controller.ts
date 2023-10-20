@@ -8,7 +8,8 @@ const { DEBUG } = config;
  * @route /test
  */
 export const getTest = errorWrapper(async (req: Request, res: Response) => {
-  if (DEBUG) console.log("getTest controller in controllers/test called.");
+  if (DEBUG)
+    console.log("DEBUG: getTest controller in controllers/test called.");
 
   res.json({ success: true });
 });

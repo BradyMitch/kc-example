@@ -10,7 +10,8 @@ const { DEBUG } = config;
  * @route /health
  */
 export const isHealthy = errorWrapper(async (req: Request, res: Response) => {
-  if (DEBUG) console.log("isHealthy controller in controllers/health called.");
+  if (DEBUG)
+    console.log("DEBUG: isHealthy controller in controllers/health called.");
   res.send("Application is healthy!");
 });
 
@@ -20,7 +21,8 @@ export const isHealthy = errorWrapper(async (req: Request, res: Response) => {
  * @route /health/ready
  */
 export const isReady = errorWrapper(async (req: Request, res: Response) => {
-  if (DEBUG) console.log("isReady controller in controllers/health called.");
+  if (DEBUG)
+    console.log("DEBUG: isReady controller in controllers/health called.");
   // Indicates if DataSource was initialized and initial connection was established or not.
   const isInitialized = dataSource.isInitialized;
   if (!isInitialized) {

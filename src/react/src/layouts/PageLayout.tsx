@@ -1,7 +1,7 @@
-import { Container } from '@mui/material';
-import { ErrorBoundary } from 'components/common';
-import { ReactNode } from 'react';
-import React from 'react';
+import { Container } from "@mui/material";
+import { ErrorBoundary } from "components/common";
+import { ReactNode } from "react";
+import React from "react";
 
 interface IPageLayout {
   children: ReactNode;
@@ -13,10 +13,10 @@ const PageLayout = (props: IPageLayout) => {
   return (
     <Container
       sx={{
-        width: '1096px !important',
-        minHeight: customHeight || '86.8vh',
-        display: 'flex',
-        justifyContent: 'center',
+        width: "1096px !important",
+        minHeight: customHeight || "86.8vh",
+        display: "flex",
+        justifyContent: "center",
       }}
     >
       <ErrorBoundary context="PageLayout.tsx">{children}</ErrorBoundary>

@@ -9,7 +9,8 @@ const { ENVIRONMENT, DEBUG } = config;
  * @route /config
  */
 export const getConfig = errorWrapper(async (req: Request, res: Response) => {
-  if (DEBUG) console.log("getConfig controller in controllers/config called.");
+  if (DEBUG)
+    console.log("DEBUG: getConfig controller in controllers/config called.");
 
   const configuration = {
     ENVIRONMENT,

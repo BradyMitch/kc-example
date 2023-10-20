@@ -49,23 +49,25 @@ const LandingPage = () => {
                   variant="h1"
                   sx={{
                     fontSize: "3rem",
-                    color: "#ff4742",
+                    color: "var(--kcBlue)",
                     fontWeight: 600,
                   }}
                 >
                   Keycloak Example
                 </Typography>
                 <Typography variant="h5">Demo Application</Typography>
-                {!user && (
-                  <>
-                    <Button onClick={() => login({ idpHint: "idir" })}>
-                      LOGIN WITH IDIR
-                    </Button>
-                  </>
-                )}
-                <Button onClick={() => getTest()}>
-                  Test Protected Route Response
-                </Button>
+                <Stack direction="row" gap={2}>
+                  {!user && (
+                    <>
+                      <Button onClick={() => login({ idpHint: "idir" })}>
+                        LOGIN WITH IDIR
+                      </Button>
+                    </>
+                  )}
+                  <Button onClick={() => getTest()}>
+                    Test Protected Route Response
+                  </Button>
+                </Stack>
               </Stack>
             </Grid>
           </Grid>

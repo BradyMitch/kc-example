@@ -72,7 +72,7 @@ const Header = () => {
         <Typography
           variant="h6"
           component="div"
-          sx={{ fontWeight: "bold", flexGrow: 1 }}
+          sx={{ fontWeight: "bold", flexGrow: 1, color: "white" }}
         >
           Keycloak Example
         </Typography>
@@ -189,6 +189,11 @@ const Header = () => {
             <ErrorIcon />
           </ListItemIcon>
           <ListItemText>Test Error</ListItemText>
+        </MenuItem>
+        <MenuItem
+          onClick={() => (window.location.href = `http://localhost:3600/docs`)}
+        >
+          <ListItemText>Open Swagger Docs</ListItemText>
         </MenuItem>
         <MenuItem onClick={() => logout()}>
           <ListItemIcon>

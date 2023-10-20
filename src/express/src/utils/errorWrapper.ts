@@ -1,27 +1,39 @@
 import { Request, Response, NextFunction } from "express";
-import HttpError from "./HttpError";
+import { HttpError } from "./HttpError";
+
+type ExpressHandler = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => Promise<void>;
 
 /**
  * Wraps a route handler (controller) function with error handling logic.
- * @param {Function} handler - The route handler (controller) function to wrap.
- * @returns {Function} A new middleware function that wraps the route handler in a try-catch block.
+ * @param {ExpressHandler} handler - The route handler (controller) function to wrap.
+ * @returns {Promise<void>} A new middleware function that wraps the route handler in a try-catch block.
  */
-export const errorWrapper = (handler: Function) => {
-  return async function (req: Request, res: Response, next: NextFunction) {
+export const errorWrapper = (handler: ExpressHandler) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
     try {
       // Execute the request logic.
       await handler(req, res, next);
-    } catch (error) {
-      // If an error occurs, log it to console and send response.
-      const { message, statusCode } = error as HttpError;
+    } catch (error: unknown) {
       const { method, originalUrl } = req;
+      let statusCode = 500,
+        message = "An unexpected error occurred.";
+
+      if (error instanceof HttpError) {
+        statusCode = error.statusCode;
+        message = error.message;
+      } else if (error instanceof Error) {
+        message = error.message;
+      }
 
       // Log the error to the console.
       console.error(`REQUEST ERROR: [${method}] ${originalUrl}: ${message}`);
 
       // Send response back to the client.
-      const resStatusCode = statusCode ?? 500;
-      res.status(resStatusCode).json({
+      res.status(statusCode).json({
         method,
         originalUrl,
         message,

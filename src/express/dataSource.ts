@@ -1,14 +1,13 @@
 import { DataSourceOptions, DataSource } from "typeorm";
 
-import config from "./config";
 const { PGHOST, PGUSER, PGPASSWORD, PGDATABASE, ENVIRONMENT, NODE_ENV } =
-  config;
+  process.env;
 
 const fileExtensions = NODE_ENV === "production" ? "js" : "ts";
 
 const ormconfig: DataSourceOptions = {
   type: "postgres",
-  host: PGHOST,
+  host: PGHOST ?? "postgres-database",
   port: 5432,
   username: PGUSER ?? "postgres",
   password: PGPASSWORD ?? "postgres",

@@ -1,3 +1,6 @@
+import { KCOptions, KeycloakUser } from "@bcgov/kc-express";
+import { activateUser } from "./src/utils/activateUser";
+
 // Environment variables set in compose file.
 const {
   NODE_ENV,
@@ -62,6 +65,20 @@ const OPENAPI_OPTIONS = {
   apis: ["./src/**/*swagger.yaml"],
 };
 
+// Keycloak auth integration configuration.
+const KEYCLOAK_OPTIONS = {
+  afterUserLogin: (user: KeycloakUser) => {
+    if (DEBUG)
+      console.log("DEBUG: afterUserLogin in config KEYCLOAK_OPTIONS called.");
+    activateUser(user);
+  },
+  afterUserLogout: (user: KeycloakUser) => {
+    if (DEBUG)
+      console.log("DEBUG: afterUserLogout in config KEYCLOAK_OPTIONS called.");
+    console.log(`${user?.display_name ?? "Unknown"} has logged out.`);
+  },
+} as KCOptions;
+
 // Exported configuration values.
 export default {
   PORT: PORT ?? 3600,
@@ -74,6 +91,7 @@ export default {
   CORS_OPTIONS,
   RATE_LIMIT_OPTIONS,
   OPENAPI_OPTIONS,
+  KEYCLOAK_OPTIONS,
   PGHOST,
   PGUSER,
   PGPASSWORD,

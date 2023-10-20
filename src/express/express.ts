@@ -11,11 +11,12 @@ import configRouter from "./src/modules/config/router";
 import testRouter from "./src/modules/test/router";
 import { keycloak, protectedRoute } from "@bcgov/kc-express";
 
-const { OPENAPI_OPTIONS, CORS_OPTIONS, RATE_LIMIT_OPTIONS } = config;
+const { OPENAPI_OPTIONS, CORS_OPTIONS, RATE_LIMIT_OPTIONS, KEYCLOAK_OPTIONS } =
+  config;
 
 // Define Express App
 const app = express();
-keycloak(app);
+keycloak(app, KEYCLOAK_OPTIONS);
 
 // Swagger OpenAPI configuration.
 app.use(

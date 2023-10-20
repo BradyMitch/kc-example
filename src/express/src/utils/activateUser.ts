@@ -1,5 +1,5 @@
-import { KeycloakUser } from "@bcgov/keycloak-express";
-import { UserService } from "../common/user/service";
+import { KeycloakUser } from "@bcgov/kc-express";
+import { UserService } from "../modules/user/service";
 
 // Called after login to create or update a user.
 export const activateUser = async (userInfo: KeycloakUser) => {

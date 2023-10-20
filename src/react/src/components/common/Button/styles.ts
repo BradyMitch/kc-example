@@ -1,7 +1,7 @@
 export const btnSX = {
   width: "fit-content",
-  background: "var(--orange)",
-  border: "1px solid var(--orange)",
+  background: "var(--kcBlue)",
+  border: "1px solid var(--kcBlue)",
   borderRadius: "6px",
   boxShadow: "rgba(0, 0, 0, 0.1) 1px 2px 4px",
   boxSizing: "border-box",
@@ -23,7 +23,7 @@ export const btnSX = {
   "&:hover, &:active": {
     backgroundColor: "initial",
     backgroundPosition: "0 0",
-    color: "var(--orange)",
+    color: "var(--kcBlue)",
   },
   "&:active": {
     opacity: 0.5,

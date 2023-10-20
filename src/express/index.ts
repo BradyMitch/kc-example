@@ -3,7 +3,7 @@ import app from "./express";
 import dataSource from "./dataSource";
 
 import config from "./config";
-const { PORT } = config;
+const { PORT, DEBUG } = config;
 
 import { logMessages } from "./src/utils";
 const {
@@ -29,6 +29,10 @@ dataSource
         console.info(CURRENT_NODE_VERSION);
         console.info(UTC_DATE_TIME);
         console.info(PACIFIC_DATE_TIME);
+        if (DEBUG)
+          console.log(
+            "DEBUG is enabled. Set environment variable to 'false' to disable."
+          );
       } catch (error) {
         // Log any error that occurs during the server start.
         console.error(error);
