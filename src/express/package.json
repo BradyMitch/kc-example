@@ -5,11 +5,11 @@
   "main": "index.ts",
   "scripts": {
     "dev": "nodemon -L --exec ts-node index.ts",
-    "build": "npx tsc",
+    "build": "tsc",
     "test": "node --import tsx --test src/**/*.test.*"
   },
   "dependencies": {
-    "@bcgov/kc-express": "file:./bcgov-kc-express-1.0.0.tgz",
+    "@bcgov/kc-express": "https://github.com/BradyMitch/kc-example/releases/download/1.0.0/bcgov-kc-express-1.0.0.tgz",
     "cookie-parser": "1.4.6",
     "cors": "2.8.5",
     "express": "4.18.2",
@@ -19,7 +19,8 @@
     "swagger-jsdoc": "6.2.8",
     "swagger-ui-express": "5.0.0",
     "typeorm": "0.3.17",
-    "zod": "3.22.2"
+    "zod": "3.22.2",
+    "typescript": "5.2.2"
   },
   "devDependencies": {
     "@types/cookie-parser": "1.4.4",
@@ -37,7 +38,6 @@
     "nodemon": "3.0.1",
     "prettier": "3.0.3",
     "ts-node": "10.9.1",
-    "tsx": "3.14.0",
-    "typescript": "5.2.2"
+    "tsx": "3.14.0"
   }
 }

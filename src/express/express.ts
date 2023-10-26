@@ -16,6 +16,11 @@ const { OPENAPI_OPTIONS, CORS_OPTIONS, RATE_LIMIT_OPTIONS, KEYCLOAK_OPTIONS } =
 
 // Define Express App
 const app = express();
+
+// Allow frontend use of a proxy (Nginx).
+app.set("trust proxy", 1);
+
+// Initialize keycloak integration.
 keycloak(app, KEYCLOAK_OPTIONS);
 
 // Swagger OpenAPI configuration.

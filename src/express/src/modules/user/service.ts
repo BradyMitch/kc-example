@@ -26,18 +26,18 @@ export const UserService = () => {
     userData: KeycloakUser & KeycloakIdirUser
   ): Promise<User | undefined> => {
     // Find user if exists.
-    if (!userData.idir_user_guid) return undefined;
-    const idirUser = await userRepository.getByGuid(userData.idir_user_guid);
+    if (!userData?.idir_user_guid) return;
+    const idirUser = await userRepository.getByGuid(userData?.idir_user_guid);
 
     if (!idirUser) {
       // User does not exist, create user.
       const newUser = {
-        guid: userData.idir_user_guid,
-        username: userData.idir_username,
-        email: userData.email,
-        firstName: userData.given_name,
-        lastName: userData.family_name,
-        roles: userData.client_roles ?? [],
+        guid: userData?.idir_user_guid,
+        username: userData?.idir_username,
+        email: userData?.email,
+        firstName: userData?.given_name,
+        lastName: userData?.family_name,
+        roles: userData?.client_roles ?? [],
         lastUpdated: new Date(),
         lastLogin: new Date(),
       };
@@ -46,11 +46,15 @@ export const UserService = () => {
 
     // Update user.
     const updatedUser = {
-      roles: userData.client_roles ?? [],
+      roles: userData?.client_roles ?? [],
       lastUpdated: new Date(),
       lastLogin: new Date(),
     };
-    return await userRepository.update(idirUser.guid as string, updatedUser);
+    if (idirUser?.guid)
+      return await userRepository.update(
+        (idirUser?.guid ?? userData?.idir_user_guid) as string,
+        updatedUser
+      );
   };
 
   return {

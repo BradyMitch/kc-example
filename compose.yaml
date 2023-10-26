@@ -20,6 +20,8 @@ services:
       - DEBUG=${DEBUG:-false}
       - PORT=${BACKEND_PORT:-3600}
       - FRONTEND_PORT=${FRONTEND_PORT:-3500}
+      - FRONTEND_URL=${FRONTEND_URL:-''}
+      - BACKEND_URL=${BACKEND_URL:-''}
       - PGHOST=${DATABASE_HOST:-postgres-database} # Name of the database container.
       - PGUSER=${DATABASE_USER:-postgres}
       - PGPASSWORD=${DATABASE_PASSWORD:-postgres}
@@ -46,10 +48,6 @@ services:
     build:
       context: ./src/react
       target: prod
-    environment:
-      - PORT=${FRONTEND_PORT:-3500}
-      - BACKEND_PORT=${BACKEND_PORT:-3600}
-      - BACKEND_SERVICE=express-api # Container or service name.
     networks:
       - nodejs-ts-npm-network
     ports:

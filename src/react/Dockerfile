@@ -25,6 +25,8 @@ CMD ["npm", "run", "dev"]
 # ================================= #
 FROM base as prod-build
 
+WORKDIR /app
+
 # Omits dev dependencies on install.
 ENV NODE_ENV=production
 
@@ -37,13 +39,7 @@ RUN npm i && \
 # ================================= #
 FROM nginx:alpine-slim as prod
 
-# Copy nginx configuration and scripts.
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY scripts/replaceEnv.js .
-
-# Replace environment variable placeholders in nginx conf and clean up.
-RUN node replaceEnv /etc/nginx/conf.d/default.conf && \
-    rm replaceEnv.js
 
 # Set working directory to nginx asset directory.
 WORKDIR /usr/share/nginx/html
@@ -54,5 +50,7 @@ RUN rm -rf ./* && \
 
 # Copy build files.
 COPY --from=prod-build /app/build .
+
+EXPOSE 3500
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]

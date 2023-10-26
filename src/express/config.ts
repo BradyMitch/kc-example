@@ -66,18 +66,18 @@ const OPENAPI_OPTIONS = {
 };
 
 // Keycloak auth integration configuration.
-const KEYCLOAK_OPTIONS = {
-  afterUserLogin: (user: KeycloakUser) => {
+const KEYCLOAK_OPTIONS: KCOptions = {
+  afterUserLogin: (user: KeycloakUser | null) => {
     if (DEBUG)
       console.log("DEBUG: afterUserLogin in config KEYCLOAK_OPTIONS called.");
-    activateUser(user);
+    if (user) activateUser(user);
   },
-  afterUserLogout: (user: KeycloakUser) => {
+  afterUserLogout: (user: KeycloakUser | null) => {
     if (DEBUG)
       console.log("DEBUG: afterUserLogout in config KEYCLOAK_OPTIONS called.");
     console.log(`${user?.display_name ?? "Unknown"} has logged out.`);
   },
-} as KCOptions;
+};
 
 // Exported configuration values.
 export default {
